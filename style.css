@@ -8,33 +8,45 @@
 }
 
 .calculator-box-1 {
-    /* display: flex; */
+    flex: 0 0 auto; /* Make the calcultor 'horizontally unresponsive' i.e. the calculator doesn't expand/shrink with increase/decrease in the width of the browser window */ 
+    display: flex;
+    flex-direction: column;
     width: 350px;
-    height: 330px;
+    height: 270px;
     border: 2px solid black;
 }
 
 .display-box-1 {
+    flex: 0 0 auto; /* flex-item of a column flexbox */ /* Stay at a fixed height i.e. at the height mentioned below. Do NOT Expand and shrink w.r.t increase/decrease in the height of .calculator-box-1 */
     height: 70px;
-    width: 100%;
     border: 5px solid red;
 }
 
 .keypad-box-1 {
-    height: 257px;
-    width: 100%;
-    border: 5px solid blue;
+    flex: 1 1 auto; /* flex-item of a column flexbox */ /* Expand and shrink w.r.t increase/decrease in the height of .calculator-box-1 */
+    /* Amount of Increase/Decrease in .calculator-box-1 === Amount of Increase/Decrease in .keypad-box-1 */
+    
+    display: flex;
+    flex-direction: column;
+    row-gap: 3.5px;
+
+    /* height: 200px; */
+    /* width: 100%; */
+    border: 5px solid blue;  
 }
 
 .row {
+    flex: 1 1 auto; /* .row is a flex-item of a column flexbox */
     display: flex;
-    column-gap: 3px;
-    width: 100%;
-    height: 49.5px;
+    column-gap: 3.5px;
+    /* width: 100%; */
+    /* height: 33.5px;  */
     border: 1px solid brown;
 }
+
 .button {
     width: 50px;
     flex: 1 1 auto;
+    /* Button's width starts with a base-width of 50px and shrinks/expands with increase/decrease in the width of .row => .keyboard-box-1 => .calulator-box-1 */
     border: 1px solid purple;
 }
