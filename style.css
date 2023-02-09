@@ -49,4 +49,12 @@
     flex: 1 1 auto;
     /* Button's width starts with a base-width of 50px and shrinks/expands with increase/decrease in the width of .row => .keyboard-box-1 => .calulator-box-1 */
     border: 1px solid purple;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-text {
+    font-weight: bold;
 }
