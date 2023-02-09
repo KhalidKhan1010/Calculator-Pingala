@@ -37,5 +37,18 @@ document.querySelectorAll('.button').forEach(button => {
     button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
     'background-color: initial;');
 });
+document.querySelectorAll('.value-button').forEach(valueButton => {
+    valueButton.addEventListener('click',
+    e => document.querySelector('.display-box-1').textContent +=
+    e.currentTarget.firstElementChild.firstChild.nodeValue);
+});
+
+/* let valueButtons = document.querySelectorAll('.value-button');
+console.log(valueButtons[0]);
+console.log(valueButtons[0].firstChild);
+console.log(valueButtons[0].firstChild.firstChild);
+console.log(valueButtons[0].firstChild.nodeValue); */
+
+
 
     
