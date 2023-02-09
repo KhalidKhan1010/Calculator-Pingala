@@ -42,6 +42,8 @@ document.querySelectorAll('.value-button').forEach(valueButton => {
     e => document.querySelector('.display-box-1').textContent +=
     e.currentTarget.firstElementChild.firstChild.nodeValue);
 });
+document.querySelector('#ac-button').addEventListener('click',
+() => document.querySelector('.display-box-1').textContent = '0');
 
 /* let valueButtons = document.querySelectorAll('.value-button');
 console.log(valueButtons[0]);
