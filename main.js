@@ -30,3 +30,12 @@ function operate(op, num1, num2){
             divide(num1, num2);
     }
 }
+
+document.querySelectorAll('.button').forEach(button => {
+    button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
+    'background-color: lightblue;');
+    button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
+    'background-color: initial;');
+});
+
+    
