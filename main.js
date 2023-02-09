@@ -37,11 +37,19 @@ document.querySelectorAll('.button').forEach(button => {
     button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
     'background-color: initial;');
 });
+
 document.querySelectorAll('.value-button').forEach(valueButton => {
     valueButton.addEventListener('click',
-    e => document.querySelector('.display-box-1').textContent +=
-    e.currentTarget.firstElementChild.firstChild.nodeValue);
+    e => {
+        if(Number(document.querySelector('.display-box-1').textContent) === 0)
+            document.querySelector('.display-box-1').textContent =
+            e.currentTarget.firstElementChild.firstChild.nodeValue;
+        else
+            document.querySelector('.display-box-1').textContent +=
+            e.currentTarget.firstElementChild.firstChild.nodeValue;
+    });
 });
+
 document.querySelector('#ac-button').addEventListener('click',
 () => document.querySelector('.display-box-1').textContent = '0');
 
