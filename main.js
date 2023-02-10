@@ -32,10 +32,29 @@ function operate(op, num1, num2){
 }
 
 document.querySelectorAll('.button').forEach(button => {
-    button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
-    'background-color: lightblue;');
-    button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
-    'background-color: initial;');
+    if (button.classList.contains('operator-button'))
+    {
+        button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
+        'background-color: rgb(173, 167, 57);'); //darker yellow
+        button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
+        'background-color: rgb(151, 147, 78);');
+
+        button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
+        'background-color: rgb(250, 241, 0);'); //darkest yellow
+    }
+    else
+    {
+
+        button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
+        'background-color: lightblue;');
+        button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
+        'background-color: initial;');
+
+        button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
+        'background-color: rgb(8, 115, 151);'); //dark blue
+        button.addEventListener('mouseup', e => e.currentTarget.style.cssText =
+        'background-color: lightblue;');
+    }
 });
 
 document.querySelectorAll('.value-button').forEach(valueButton => {

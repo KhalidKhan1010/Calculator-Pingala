@@ -58,3 +58,7 @@
 .button-text {
     font-weight: bold;
 }
+
+.operator-button{
+    background-color: rgb(151, 147, 78);
+}
