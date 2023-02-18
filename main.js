@@ -1,3 +1,14 @@
+const operation = {
+    num1: 0,
+    num2: null,
+    operator: null,
+    result: null,
+    operatorPressed: false
+}
+
+let displayMode = 'replace';
+//let operatorPressed = false;
+
 function add(num1, num2){
     return num1 + num2;
 }
@@ -14,22 +25,21 @@ function divide(num1, num2){
     return num1 / num2;
 }
 
-function operate(op, num1, num2){
-    switch (op)
+function operate(num1, num2, operator){
+    switch (operator)
     {
         case '+':
-            add(num1, num2);
-            break;
-        case '-':
-            subtract(num1, num2);
-            break;
-        case '*':
-            multiply(num1, num2);
-            break;
-        case '/':
-            divide(num1, num2);
+            return add(num1, num2);
+        case '\u2212':
+            return subtract(num1, num2);
+        case '\xD7':
+            return multiply(num1, num2);
+        case '\xF7':
+            return divide(num1, num2);
     }
 }
+
+document.querySelector('.display-box-1').textContent = operation.num1.toString();
 
 document.querySelectorAll('.button').forEach(button => {
     if (button.classList.contains('operator-button'))
@@ -44,7 +54,6 @@ document.querySelectorAll('.button').forEach(button => {
     }
     else
     {
-
         button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
         'background-color: lightblue;');
         button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
@@ -58,25 +67,64 @@ document.querySelectorAll('.button').forEach(button => {
 });
 
 document.querySelectorAll('.value-button').forEach(valueButton => {
-    valueButton.addEventListener('click',
-    e => {
-        if(Number(document.querySelector('.display-box-1').textContent) === 0)
-            document.querySelector('.display-box-1').textContent =
-            e.currentTarget.firstElementChild.firstChild.nodeValue;
+    valueButton.addEventListener('click', e => {
+        if(operation.operatorPressed === false)
+        {
+            operation.num1 = Number((+operation.num1).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue));
+            document.querySelector('.display-box-1').firstChild.nodeValue =
+            operation.num1.toString();
+        }
         else
-            document.querySelector('.display-box-1').textContent +=
-            e.currentTarget.firstElementChild.firstChild.nodeValue;
+        {
+            if(operation.result !== null)
+                operation.num1 = operation.result;
+
+            operation.num2 = Number((+operation.num2).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue));
+            document.querySelector('.display-box-1').firstChild.nodeValue  =
+            operation.num2.toString();
+        }
     });
 });
 
-document.querySelector('#ac-button').addEventListener('click',
-() => document.querySelector('.display-box-1').textContent = '0');
+document.querySelectorAll('.operator-button').forEach(button => button.addEventListener('click',
+handleOperatorClick));
 
-/* let valueButtons = document.querySelectorAll('.value-button');
-console.log(valueButtons[0]);
-console.log(valueButtons[0].firstChild);
-console.log(valueButtons[0].firstChild.firstChild);
-console.log(valueButtons[0].firstChild.nodeValue); */
+function handleOperatorClick(e){
+    if(operation.num1 !== null && operation.num2 !== null && operation.operator !== null)
+        handleEqualClick();
+    
+    operation.operator = e.currentTarget.firstElementChild.firstChild.nodeValue;
+    operation.operatorPressed = true;
+    // highlight button    
+}
+
+document.querySelector('#equal-button').addEventListener('click', handleEqualClick);
+
+function handleEqualClick(){
+    if(operation.num1 !== null && operation.num2 !== null && operation.operator !== null)
+    {
+        operation.result = operate(operation.num1, operation.num2, operation.operator);
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.result.toString();
+        operation.num1 = operation.num2 = operation.operator = null;
+        operation.operatorPressed = false;
+    }
+}
+
+
+function getOperand(){
+    return Number(document.querySelector('.display-box-1').firstChild.nodeValue);
+}
+
+function beginNextOperand(){
+    displayMode = 'replace';
+}
+
+document.querySelector('#ac-button').addEventListener('click', () => {
+    operation.num2 = operation.operator = operation.result = null;
+    operation.num1 = 0;
+    operation.operatorPressed = false;
+    document.querySelector('.display-box-1').textContent = operation.num1.toString();
+});
 
 
 
