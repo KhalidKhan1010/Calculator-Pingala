@@ -1,5 +1,5 @@
 const operation = {
-    num1: 0,
+    num1: null,
     num2: null,
     operator: null,
     result: null,
@@ -26,6 +26,8 @@ function divide(num1, num2){
 }
 
 function operate(num1, num2, operator){
+    num1 = +num1;
+    num2 = +num2;
     switch (operator)
     {
         case '+':
@@ -39,6 +41,7 @@ function operate(num1, num2, operator){
     }
 }
 
+operation.num1 = 0;
 document.querySelector('.display-box-1').textContent = operation.num1.toString();
 
 document.querySelectorAll('.button').forEach(button => {
@@ -51,6 +54,8 @@ document.querySelectorAll('.button').forEach(button => {
 
         button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
         'background-color: rgb(250, 241, 0);'); //darkest yellow
+        button.addEventListener('mouseup', e => e.currentTarget.style.cssText =
+        'background-color: rgb(173, 167, 57);');
     }
     else
     {
@@ -66,25 +71,49 @@ document.querySelectorAll('.button').forEach(button => {
     }
 });
 
-document.querySelectorAll('.value-button').forEach(valueButton => {
-    valueButton.addEventListener('click', e => {
-        if(operation.operatorPressed === false)
-        {
-            operation.num1 = Number((+operation.num1).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue));
-            document.querySelector('.display-box-1').firstChild.nodeValue =
-            operation.num1.toString();
-        }
-        else
-        {
-            if(operation.result !== null)
-                operation.num1 = operation.result;
+document.querySelectorAll('.value-button').forEach(valueButton =>
+    valueButton.addEventListener('click', handleValueClick));
 
-            operation.num2 = Number((+operation.num2).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue));
-            document.querySelector('.display-box-1').firstChild.nodeValue  =
-            operation.num2.toString();
-        }
-    });
-});
+function handleValueClick(e){
+    console.log('value function');
+    console.log(e.currentTarget.firstElementChild.firstChild.nodeValue); 
+    if(operation.operatorPressed === false)
+    {
+        if(operation.num1 === null)
+            operation.num1 = +(operation.num1);
+
+        if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')
+            operation.num1 = (operation.num1 === '0' || operation.num1 === 0) ? '' : operation.num1;
+
+        operation.num1 = (operation.num1).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        document.querySelector('.display-box-1').firstChild.nodeValue =
+        operation.num1;
+    }
+    else
+    {
+        if(operation.result !== null)
+            operation.num1 = operation.result;
+
+        if(operation.num2 === null)
+            operation.num2 = +(operation.num2);
+
+        if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')   
+            operation.num2 = (operation.num2 === '0' || operation.num2 === 0) ? '' : operation.num2;
+
+        operation.num2 = (operation.num2).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        document.querySelector('.display-box-1').firstChild.nodeValue  =
+        operation.num2;
+    }
+}
+
+document.querySelector('#point-button').addEventListener('click', e => {
+    console.log('clicked');
+    if(!document.querySelector('.display-box-1').firstChild.nodeValue.includes('.'))
+    {
+        console.log('clicked if part');   
+        handleValueClick(e); // Treat decimal point as a value
+    }
+})
 
 document.querySelectorAll('.operator-button').forEach(button => button.addEventListener('click',
 handleOperatorClick));
