@@ -4,10 +4,7 @@ const operation = {
     operator: null,
     result: null,
     operatorPressed: false
-}
-
-let displayMode = 'replace';
-//let operatorPressed = false;
+};
 
 function add(num1, num2){
     return num1 + num2;
@@ -28,6 +25,7 @@ function divide(num1, num2){
 function operate(num1, num2, operator){
     num1 = +num1;
     num2 = +num2;
+
     switch (operator)
     {
         case '+':
@@ -41,8 +39,8 @@ function operate(num1, num2, operator){
     }
 }
 
-operation.num1 = 0;
-document.querySelector('.display-box-1').textContent = operation.num1.toString();
+operation.num1 = '0';
+document.querySelector('.display-box-1').textContent = operation.num1;
 
 document.querySelectorAll('.button').forEach(button => {
     if (button.classList.contains('operator-button'))
@@ -75,19 +73,17 @@ document.querySelectorAll('.value-button').forEach(valueButton =>
     valueButton.addEventListener('click', handleValueClick));
 
 function handleValueClick(e){
-    console.log('value function');
     console.log(e.currentTarget.firstElementChild.firstChild.nodeValue); 
     if(operation.operatorPressed === false)
     {
         if(operation.num1 === null)
-            operation.num1 = +(operation.num1);
+            operation.num1 = '0';
 
         if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')
-            operation.num1 = (operation.num1 === '0' || operation.num1 === 0) ? '' : operation.num1;
+            operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
 
-        operation.num1 = (operation.num1).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
-        document.querySelector('.display-box-1').firstChild.nodeValue =
-        operation.num1;
+        operation.num1 = operation.num1.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
     }
     else
     {
@@ -95,23 +91,30 @@ function handleValueClick(e){
             operation.num1 = operation.result;
 
         if(operation.num2 === null)
-            operation.num2 = +(operation.num2);
+            operation.num2 = '0';
 
         if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')   
-            operation.num2 = (operation.num2 === '0' || operation.num2 === 0) ? '' : operation.num2;
+            operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
 
-        operation.num2 = (operation.num2).toString().concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        operation.num2 = operation.num2.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
         document.querySelector('.display-box-1').firstChild.nodeValue  =
         operation.num2;
     }
 }
 
 document.querySelector('#point-button').addEventListener('click', e => {
-    console.log('clicked');
-    if(!document.querySelector('.display-box-1').firstChild.nodeValue.includes('.'))
+    operation.num1 = (operation.num1 === null) ? '0' : operation.num1;
+    operation.num2 = (operation.num2 === null) ? '0' : operation.num2;
+
+    if(operation.operatorPressed === false)
     {
-        console.log('clicked if part');   
-        handleValueClick(e); // Treat decimal point as a value
+        if(!operation.num1.includes('.'))
+            handleValueClick(e); // Treat decimal point as a value
+    }
+    else
+    {
+        if(!operation.num2.includes('.'))
+            handleValueClick(e); // Treat decimal point as a value
     }
 })
 
@@ -139,22 +142,12 @@ function handleEqualClick(){
     }
 }
 
-
-function getOperand(){
-    return Number(document.querySelector('.display-box-1').firstChild.nodeValue);
-}
-
-function beginNextOperand(){
-    displayMode = 'replace';
-}
-
 document.querySelector('#ac-button').addEventListener('click', () => {
     operation.num2 = operation.operator = operation.result = null;
-    operation.num1 = 0;
+    operation.num1 = '0';
     operation.operatorPressed = false;
-    document.querySelector('.display-box-1').textContent = operation.num1.toString();
+    document.querySelector('.display-box-1').textContent = operation.num1;
 });
-
 
 
     
