@@ -3,7 +3,8 @@ const operation = {
     num2: null,
     operator: null,
     result: null,
-    operatorPressed: false
+    operatorPressed: false,
+    prevButton: document.createElement('div') //Buttons are implmented as div html elements
 };
 
 function add(num1, num2){
@@ -43,17 +44,15 @@ operation.num1 = '0';
 document.querySelector('.display-box-1').textContent = operation.num1;
 
 document.querySelectorAll('.button').forEach(button => {
-    if (button.classList.contains('operator-button'))
+    if(button.classList.contains('operator-button'))
     {
-        button.addEventListener('mouseenter', e => e.currentTarget.style.cssText =
-        'background-color: rgb(173, 167, 57);'); //darker yellow
-        button.addEventListener('mouseleave', e => e.currentTarget.style.cssText =
-        'background-color: rgb(151, 147, 78);');
+        button.addEventListener('mouseenter', mouseEntersOp); 
+        button.addEventListener('mouseleave', mouseLeavesOp);
 
         button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
         'background-color: rgb(250, 241, 0);'); //darkest yellow
-        button.addEventListener('mouseup', e => e.currentTarget.style.cssText =
-        'background-color: rgb(173, 167, 57);');
+        /* button.addEventListener('mouseup', e => e.currentTarget.style.cssText =
+        'background-color: rgb(173, 167, 57);'); */
     }
     else
     {
@@ -68,6 +67,35 @@ document.querySelectorAll('.button').forEach(button => {
         'background-color: lightblue;');
     }
 });
+
+function mouseLeavesOp(e){
+    e.currentTarget.style.cssText = 'background-color: rgb(151, 147, 78);'
+}
+
+function mouseEntersOp(e){
+    e.currentTarget.style.cssText = 'background-color: rgb(173, 167, 57);' //darker yellow
+}
+
+document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+    //let buttonText = e.currentTarget.firstElementChild.firstChild.nodeValue;
+    let buttonText = button.firstElementChild.firstChild.nodeValue;
+
+    if(button.classList.contains('operator-button'))
+    {
+        button.removeEventListener('mouseleave', mouseLeavesOp);
+        button.removeEventListener('mouseenter', mouseEntersOp);
+    }
+
+    if(operation.prevButton.className !== button.className)
+    {
+        if(operation.prevButton.classList.contains('operator-button'))
+        {
+            operation.prevButton.style.cssText = 'background-color: rgb(173, 167, 57);' //light yellow // Akin to 'mouseup' event
+        }
+    }
+
+    operation.prevButton = button;
+}));
 
 document.querySelectorAll('.value-button').forEach(valueButton =>
     valueButton.addEventListener('click', handleValueClick));
@@ -147,7 +175,4 @@ document.querySelector('#ac-button').addEventListener('click', () => {
     operation.num1 = '0';
     operation.operatorPressed = false;
     document.querySelector('.display-box-1').textContent = operation.num1;
-});
-
-
-    
+}); 
