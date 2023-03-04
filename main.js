@@ -78,7 +78,7 @@ function mouseEntersOp(e){
 
 document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
     //let buttonText = e.currentTarget.firstElementChild.firstChild.nodeValue;
-    let buttonText = button.firstElementChild.firstChild.nodeValue;
+    //let buttonText = button.firstElementChild.firstChild.nodeValue;
 
     if(button.classList.contains('operator-button'))
     {
@@ -131,20 +131,21 @@ function handleValueClick(e){
 }
 
 document.querySelector('#point-button').addEventListener('click', e => {
-    operation.num1 = (operation.num1 === null) ? '0' : operation.num1;
-    operation.num2 = (operation.num2 === null) ? '0' : operation.num2;
+    
 
     if(operation.operatorPressed === false)
     {
+        operation.num1 = (operation.num1 === null) ? '0' : operation.num1;
         if(!operation.num1.includes('.'))
             handleValueClick(e); // Treat decimal point as a value
     }
     else
     {
+        operation.num2 = (operation.num2 === null) ? '0' : operation.num2;
         if(!operation.num2.includes('.'))
             handleValueClick(e); // Treat decimal point as a value
     }
-})
+});
 
 document.querySelectorAll('.operator-button').forEach(button => button.addEventListener('click',
 handleOperatorClick));
@@ -163,11 +164,37 @@ document.querySelector('#equal-button').addEventListener('click', handleEqualCli
 function handleEqualClick(){
     if(operation.num1 !== null && operation.num2 !== null && operation.operator !== null)
     {
+        console.log('Equal');
         operation.result = operate(operation.num1, operation.num2, operation.operator);
         document.querySelector('.display-box-1').firstChild.nodeValue = operation.result.toString();
         operation.num1 = operation.num2 = operation.operator = null;
         operation.operatorPressed = false;
     }
+}
+
+document.querySelector('#back-button').addEventListener('click', handleBackClick);
+
+function handleBackClick(){
+    if(operation.operatorPressed === false && operation.num1 !== null && operation.num1 !== '0')
+    {
+        operation.num1 = operation.num1.slice(0, -1);
+
+        if (operation.num1 === '')
+            operation.num1 = '0';
+    
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
+    }
+    else if(operation.operatorPressed === true && operation.num2 !== null && operation.num2 !== '0')
+    {
+        operation.num2 = operation.num2.slice(0, -1);
+
+        if (operation.num2 === '')
+            operation.num2 = '0';
+
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.num2;
+    }
+    else if(operation.operatorPressed === true && operation.num2 === null)
+        operation.operatorPressed = false;   
 }
 
 document.querySelector('#ac-button').addEventListener('click', () => {
