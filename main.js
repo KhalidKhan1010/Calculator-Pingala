@@ -117,7 +117,7 @@ function handleValueClick(e){
     {
         // this code .........................................
         if(operation.result !== null && operation.num1 === null)
-            operation.num1 = operation.result;
+            operation.num1 = operation.result; //
         // this code .........................................
 
         if(operation.num2 === null)
@@ -148,6 +148,28 @@ function handlePointClick(e){
     }
 }
 
+document.querySelector('#sign-button').addEventListener('click', handleSignClick);
+
+function handleSignClick(){
+    let numString = document.querySelector('.display-box-1').firstChild.nodeValue;
+    let newNumString;
+
+    if(+numString !== 0){
+
+        if(numString.startsWith('-'))
+            document.querySelector('.display-box-1').firstChild.nodeValue =
+            newNumString = numString.slice(1, );
+        else
+            document.querySelector('.display-box-1').firstChild.nodeValue =
+            newNumString = '-' + numString;
+        
+        if(operation.operatorPressed === false)
+            operation.num1 = newNumString;
+        else
+            operation.num2 = newNumString;
+    } 
+}
+
 document.querySelectorAll('.operator-button').forEach(button => button.addEventListener('click',
 handleOperatorClick));
 
@@ -163,7 +185,6 @@ function handleOperatorClick(e){
     /* document.querySelectorAll('.value-button').forEach(valueButton =>
         valueButton.addEventListener('click', handleValueClick));
     document.querySelector('#point-button').addEventListener('click', handlePointClick); */
-
 }
 
 document.querySelector('#equal-button').addEventListener('click', handleEqualClick);
@@ -171,46 +192,17 @@ document.querySelector('#equal-button').addEventListener('click', handleEqualCli
 function handleEqualClick(){
     if(operation.num1 !== null && operation.num2 !== null && operation.operator !== null)
     {
-        console.log('Equal');
         operation.result = operate(operation.num1, operation.num2, operation.operator);
         document.querySelector('.display-box-1').firstChild.nodeValue = operation.result.toString();
         operation.num1 = operation.num2 = operation.operator = null;
         operation.operatorPressed = false;
-        
+
         //Deprecated square button code
         /* document.querySelectorAll('.value-button').forEach(valueButton =>
             valueButton.addEventListener('click', handleValueClick));
         document.querySelector('#point-button').addEventListener('click', handlePointClick); */
-
     }
 }
-
-//Deprecated square button code
-
-/* document.querySelector('#square-button').addEventListener('click', () => {
-    if(operation.result !== null && operation.num1 === null && operation.num2 === null)
-    {
-        operation.result = operate(operation.result, operation.result, '\xD7'); // multiply
-        document.querySelector('.display-box-1').firstChild.nodeValue = operation.result.toString();
-    }
-    else
-    {
-        if(operation.operatorPressed === false)
-        {
-            operation.num1 = operate(operation.num1, operation.num1, '\xD7').toString(); // multiply
-            document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
-        } 
-        else
-        {
-            operation.num2 = operate(operation.num2, operation.num2, '\xD7').toString(); // multiply
-            document.querySelector('.display-box-1').firstChild.nodeValue = operation.num2;    
-        }
-    }
-
-    document.querySelectorAll('.value-button').forEach(valueButton =>
-        valueButton.removeEventListener('click', handleValueClick));
-    document.querySelector('#point-button').removeEventListener('click', handlePointClick);
-}); */
 
 document.querySelector('#back-button').addEventListener('click', handleBackClick);
 
@@ -247,4 +239,32 @@ document.querySelector('#ac-button').addEventListener('click', () => {
     /* document.querySelectorAll('.value-button').forEach(valueButton =>
         valueButton.addEventListener('click', handleValueClick));
     document.querySelector('#point-button').addEventListener('click', handlePointClick); */
-}); 
+});
+
+
+//Deprecated square button code
+
+/* document.querySelector('#square-button').addEventListener('click', () => {
+    if(operation.result !== null && operation.num1 === null && operation.num2 === null)
+    {
+        operation.result = operate(operation.result, operation.result, '\xD7'); // multiply
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.result.toString();
+    }
+    else
+    {
+        if(operation.operatorPressed === false)
+        {
+            operation.num1 = operate(operation.num1, operation.num1, '\xD7').toString(); // multiply
+            document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
+        } 
+        else
+        {
+            operation.num2 = operate(operation.num2, operation.num2, '\xD7').toString(); // multiply
+            document.querySelector('.display-box-1').firstChild.nodeValue = operation.num2;    
+        }
+    }
+
+    document.querySelectorAll('.value-button').forEach(valueButton =>
+        valueButton.removeEventListener('click', handleValueClick));
+    document.querySelector('#point-button').removeEventListener('click', handlePointClick);
+}); */
