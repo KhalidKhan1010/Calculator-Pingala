@@ -32,10 +32,13 @@ function operate(num1, num2, operator){
         case '+':
             return add(num1, num2);
         case '\u2212':
+        case '-':
             return subtract(num1, num2);
         case '\xD7':
+        case '*':
             return multiply(num1, num2);
         case '\xF7':
+        case '/':
             return divide(num1, num2);
     }
 }
@@ -100,17 +103,31 @@ document.querySelectorAll('.button').forEach(button => button.addEventListener('
 document.querySelectorAll('.value-button').forEach(valueButton =>
     valueButton.addEventListener('click', handleValueClick));
 
-function handleValueClick(e){
-    console.log(e.currentTarget.firstElementChild.firstChild.nodeValue); 
+/* function handleValueClick(e, keyValue){ //keyboard support
+    //console.log(e.currentTarget.firstElementChild.firstChild.nodeValue); 
     if(operation.operatorPressed === false)
     {
         if(operation.num1 === null)
             operation.num1 = '0';
 
-        if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')
-            operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
 
-        operation.num1 = operation.num1.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        if(keyValue === undefined)
+        {
+            if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')
+                operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
+        }
+        else
+        {
+            if(keyValue !== '.')
+                operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
+        }
+
+
+        if(keyValue === undefined)
+            operation.num1 = operation.num1.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        else
+            operation.num1 = operation.num1.concat(keyValue);
+
         document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
     }
     else
@@ -123,28 +140,122 @@ function handleValueClick(e){
         if(operation.num2 === null)
             operation.num2 = '0';
 
-        if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')   
-            operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
 
-        operation.num2 = operation.num2.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        if(keyValue === undefined)
+        {
+            if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')   
+                operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
+        }
+        else
+        {
+            if(keyValue !== '.')   
+                operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
+        }
+
+
+        if(keyValue === undefined)
+        {
+            operation.num2 = operation.num2.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        }
+        else
+        {
+            operation.num2 = operation.num2.concat(keyValue);   
+        }
+
+        document.querySelector('.display-box-1').firstChild.nodeValue  = operation.num2;
+    }
+} */
+
+function handleValueClick(eOrKey){ //Key for keyboard support
+    //e is a mouse click event while key is a string (which is equal to the value of the keyboard key pressed)
+
+    if(operation.operatorPressed === false)
+    {
+        if(operation.num1 === null)
+            operation.num1 = '0';
+
+
+        if(eOrKey instanceof Event)
+        {
+            let e = eOrKey; // eOrKey is an event, an 'e'
+            if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')
+                operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
+        }
+        else
+        {
+            let keyValueStr = eOrKey; // eOrKey is a string equal to value of the key pressed
+            if(keyValueStr !== '.')
+                operation.num1 = (operation.num1 === '0') ? '' : operation.num1;
+        }
+
+
+        if(eOrKey instanceof Event)
+        {
+            let e = eOrKey; // eOrKey is an event, an 'e'    
+            operation.num1 = operation.num1.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        }
+        else
+        {
+            let keyValueStr = eOrKey; // eOrKey is a string equal to value of the key pressed
+            operation.num1 = operation.num1.concat(keyValueStr);
+        }
+
+        document.querySelector('.display-box-1').firstChild.nodeValue = operation.num1;
+    }
+    else
+    {
+        // this code .........................................
+        if(operation.result !== null && operation.num1 === null)
+            operation.num1 = operation.result;
+        // this code .........................................
+
+        if(operation.num2 === null)
+            operation.num2 = '0';
+
+
+        if(eOrKey instanceof Event)
+        {
+            let e = eOrKey; // eOrKey is an event, an 'e'
+            if(e.currentTarget.firstElementChild.firstChild.nodeValue !== '.')   
+                operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
+        }
+        else
+        {
+            let keyValueStr = eOrKey; // eOrKey is a string equal to value of the key pressed
+            if(keyValueStr !== '.')   
+                operation.num2 = (operation.num2 === '0') ? '' : operation.num2;
+        }
+
+
+        if(eOrKey instanceof Event)
+        {
+            let e = eOrKey; // eOrKey is an event, an 'e'
+            operation.num2 = operation.num2.concat(e.currentTarget.firstElementChild.firstChild.nodeValue);
+        }
+        else
+        {
+            let keyValueStr = eOrKey; // eOrKey is a string equal to value of the key pressed
+            operation.num2 = operation.num2.concat(keyValueStr);   
+        }
+
         document.querySelector('.display-box-1').firstChild.nodeValue  = operation.num2;
     }
 }
 
 document.querySelector('#point-button').addEventListener('click', handlePointClick);
 
-function handlePointClick(e){
+function handlePointClick(){
     if(operation.operatorPressed === false)
     {
         operation.num1 = (operation.num1 === null) ? '0' : operation.num1;
         if(!operation.num1.includes('.'))
-            handleValueClick(e); // Treat decimal point as a value
+            handleValueClick('.'); // Treat decimal point as a value. Key value is '.' (a string)
     }
     else
     {
         operation.num2 = (operation.num2 === null) ? '0' : operation.num2;
         if(!operation.num2.includes('.'))
-            handleValueClick(e); // Treat decimal point as a value
+            handleValueClick('.'); // Treat decimal point as a value. Key value is '.' (a string)
     }
 }
 
@@ -173,11 +284,20 @@ function handleSignClick(){
 document.querySelectorAll('.operator-button').forEach(button => button.addEventListener('click',
 handleOperatorClick));
 
-function handleOperatorClick(e){
+function handleOperatorClick(eOrKey){
     if(operation.num1 !== null && operation.num2 !== null && operation.operator !== null)
         handleEqualClick();
     
-    operation.operator = e.currentTarget.firstElementChild.firstChild.nodeValue;
+    if(eOrKey instanceof Event)
+    {
+        let e = eOrKey;
+        operation.operator = e.currentTarget.firstElementChild.firstChild.nodeValue;
+    }
+    else
+    {
+        let keyCharStr = eOrKey;
+        operation.operator = keyCharStr;   
+    }
     operation.operatorPressed = true;
     // highlight button
 
@@ -229,7 +349,9 @@ function handleBackClick(){
         operation.operatorPressed = false;   
 }
 
-document.querySelector('#ac-button').addEventListener('click', () => {
+document.querySelector('#ac-button').addEventListener('click', handleAcClick);
+
+function handleAcClick(){
     operation.num2 = operation.operator = operation.result = null;
     operation.num1 = '0';
     operation.operatorPressed = false;
@@ -239,11 +361,28 @@ document.querySelector('#ac-button').addEventListener('click', () => {
     /* document.querySelectorAll('.value-button').forEach(valueButton =>
         valueButton.addEventListener('click', handleValueClick));
     document.querySelector('#point-button').addEventListener('click', handlePointClick); */
-});
+}
+
+document.addEventListener('keydown', handleKeydown);
+
+function handleKeydown(e){
+    if(e.key >= '0' && e.key <= '9')
+        handleValueClick(e.key); // e.key is a string
+        // No mouse click, keyboard key value === e.key
+    else if(e.key === '.')
+        handlePointClick();
+    else if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/')
+        handleOperatorClick(e.key);
+    else if(e.key === 'Enter')
+        handleEqualClick();
+    else if(e.key === 'Backspace')
+        handleBackClick();
+    else if(e.key === 'Escape')
+        handleAcClick();
+}
 
 
 //Deprecated square button code
-
 /* document.querySelector('#square-button').addEventListener('click', () => {
     if(operation.result !== null && operation.num1 === null && operation.num2 === null)
     {
