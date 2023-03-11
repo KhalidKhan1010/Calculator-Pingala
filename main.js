@@ -52,8 +52,11 @@ document.querySelectorAll('.button').forEach(button => {
         button.addEventListener('mouseenter', mouseEntersOp); //darker yellow
         button.addEventListener('mouseleave', mouseLeavesOp); //light yellow (default)
 
-        button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
-        'background-color: rgb(250, 241, 0);'); //darkest yellow
+        button.addEventListener('mousedown', e => {
+            e.currentTarget.style.cssText = 'background-color: rgb(250, 241, 0);' //darkest yellow
+            e.currentTarget.removeEventListener('mouseleave', mouseLeavesOp);
+            e.currentTarget.removeEventListener('mouseenter', mouseEntersOp);
+        }); 
         /* button.addEventListener('mouseup', e => e.currentTarget.style.cssText =
         'background-color: rgb(173, 167, 57);'); */
     }
@@ -80,21 +83,20 @@ function mouseEntersOp(e){
 }
 
 document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
-    //let buttonText = e.currentTarget.firstElementChild.firstChild.nodeValue;
-    //let buttonText = button.firstElementChild.firstChild.nodeValue;
-
-    if(button.classList.contains('operator-button'))
+   
+    /* if(button.classList.contains('operator-button'))
     {
         button.removeEventListener('mouseleave', mouseLeavesOp);
         button.removeEventListener('mouseenter', mouseEntersOp);
-    }
+    } */
 
-    if(operation.prevButton.className !== button.className)
+    if(operation.prevButton.classList.contains('operator-button') &&
+    (operation.prevButton.className !== button.className))
     {
-        if(operation.prevButton.classList.contains('operator-button'))
-        {
-            operation.prevButton.style.cssText = 'background-color: rgb(151, 147, 78);' //light yellow (deafult) // Akin to 'mouseup' event
-        }
+        operation.prevButton.style.cssText = 'background-color: rgb(151, 147, 78);' //light yellow (deafult) // Akin to 'mouseup' event
+
+        operation.prevButton.addEventListener('mouseenter', mouseEntersOp); //darker yellow
+        operation.prevButton.addEventListener('mouseleave', mouseLeavesOp); //light yellow (default)
     }
 
     operation.prevButton = button;
