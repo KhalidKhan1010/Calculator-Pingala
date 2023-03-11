@@ -49,8 +49,8 @@ document.querySelector('.display-box-1').textContent = operation.num1;
 document.querySelectorAll('.button').forEach(button => {
     if(button.classList.contains('operator-button'))
     {
-        button.addEventListener('mouseenter', mouseEntersOp); 
-        button.addEventListener('mouseleave', mouseLeavesOp);
+        button.addEventListener('mouseenter', mouseEntersOp); //darker yellow
+        button.addEventListener('mouseleave', mouseLeavesOp); //light yellow (default)
 
         button.addEventListener('mousedown', e => e.currentTarget.style.cssText =
         'background-color: rgb(250, 241, 0);'); //darkest yellow
@@ -72,7 +72,7 @@ document.querySelectorAll('.button').forEach(button => {
 });
 
 function mouseLeavesOp(e){
-    e.currentTarget.style.cssText = 'background-color: rgb(151, 147, 78);'
+    e.currentTarget.style.cssText = 'background-color: rgb(151, 147, 78);' //light yellow (default)
 }
 
 function mouseEntersOp(e){
@@ -93,7 +93,7 @@ document.querySelectorAll('.button').forEach(button => button.addEventListener('
     {
         if(operation.prevButton.classList.contains('operator-button'))
         {
-            operation.prevButton.style.cssText = 'background-color: rgb(173, 167, 57);' //light yellow // Akin to 'mouseup' event
+            operation.prevButton.style.cssText = 'background-color: rgb(151, 147, 78);' //light yellow (deafult) // Akin to 'mouseup' event
         }
     }
 
